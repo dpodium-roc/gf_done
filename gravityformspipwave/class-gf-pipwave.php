@@ -192,7 +192,7 @@ EOD;
 			'api_override' => array(
 				'success_url'   => $successUrl, //! empty( $feed['meta']['successUrl'] ) ? urlencode( $feed['meta']['successUrl'] ) : $successUrl,
 				'fail_url'      => ! empty( $feed['meta']['failUrl'] ) ? urlencode( $feed['meta']['failUrl'] ) :  get_bloginfo( 'url' ) ,
-				'notification_url' => 'https://3d41d97e.ngrok.io/wordpress/?page=gf_pipwave_ipn', //urlencode( get_bloginfo( 'url' ) . '/?page=gf_pipwave_ipn' ),
+				'notification_url' => urlencode( get_bloginfo( 'url' ) . '/?page=gf_pipwave_ipn' ),//'https://3d41d97e.ngrok.io/wordpress/?page=gf_pipwave_ipn',
 			),
 		);
 		return $data;
