@@ -602,6 +602,31 @@ EOD;
 
         //var_dump($default_settings);
         $default_settings   = parent::add_field_after( 'feedName', $fields, $default_settings );
+
+        //overwrite default - because we dont have subscription functionality
+		$fields = array(
+			array(
+				'name'     => 'transactionType',
+				'label'    => esc_html__( 'Transaction Type', 'gravityforms' ),
+				'type'     => 'select',
+				'onchange' => "jQuery(this).parents('form').submit();",
+				'choices'  => array(
+					array(
+						'label' => esc_html__( 'Select a transaction type', 'gravityforms' ),
+						'value' => ''
+					),
+					array(
+						'label' => esc_html__( 'Products and Services', 'gravityforms' ),
+						'value' => 'product'
+					),
+					//array( 'label' => esc_html__( 'Subscription', 'gravityforms' ), 'value' => 'subscription' ),
+				),
+				'tooltip'  => '<h6>' . esc_html__( 'Transaction Type', 'gravityforms' ) . '</h6>' . esc_html__( 'Select a transaction type.', 'gravityforms' )
+
+			),
+		);
+	    $default_settings   = parent::replace_field( 'transactionType', $fields, $default_settings );
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	    //get set shipping amount
