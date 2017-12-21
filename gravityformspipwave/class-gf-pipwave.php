@@ -705,6 +705,7 @@ EOD;
 	    $default_settings = parent::replace_field( 'billingInformation', $billing_info, $default_settings );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	    $default_settings = parent::remove_field( 'options', $default_settings );
         return $default_settings;
     }
 
