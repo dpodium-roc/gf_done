@@ -190,7 +190,7 @@ EOD;
 				'state'         => rgar( $entry, $feed['meta']['billingInformation_state'] ),
 			),
 			'api_override' => array(
-				'success_url'   => ! empty( $feed['meta']['successUrl'] ) ? urlencode( $feed['meta']['successUrl'] ) : $successUrl,
+				'success_url'   => $successUrl, //! empty( $feed['meta']['successUrl'] ) ? urlencode( $feed['meta']['successUrl'] ) : $successUrl,
 				'fail_url'      => ! empty( $feed['meta']['failUrl'] ) ? urlencode( $feed['meta']['failUrl'] ) :  get_bloginfo( 'url' ) ,
 				'notification_url' => 'https://3d41d97e.ngrok.io/wordpress/?page=gf_pipwave_ipn', //urlencode( get_bloginfo( 'url' ) . '/?page=gf_pipwave_ipn' ),
 			),
@@ -582,6 +582,7 @@ EOD;
                 'class'             => 'medium',
                 'tooltip'           => '<h6>' . esc_html__( 'Processing Fee Group', 'translator' ) . '</h6>' . sprintf( esc_html__( 'Payment Processing Fee Group can be configured %shere%s. Please fill referenceId in the blank.( if available )', 'translator' ), '<a href="https://merchant.pipwave.com/account/set-processing-fee-group#general-processing-fee-group" target="_blank">', '</a>' ),
             ),
+	        /*
 	        array(
 		        'name'              => 'successUrl',
 		        'label'             => 'Success Url',
@@ -589,6 +590,7 @@ EOD;
 		        'class'             => 'medium',
 		        'tooltip'           => '<h6>Success Url</h6>pipwave will redirect to this page if payment success.',
 	        ),
+	        */
 	        array(
 		        'name'              => 'failUrl',
 		        'label'             => 'Fail Url',
