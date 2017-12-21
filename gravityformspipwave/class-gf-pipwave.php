@@ -344,7 +344,7 @@ EOD;
 			if ( $pipwave_score != '') {
 				GFPaymentAddOn::add_note( $entry['id'], sprintf( __( 'pipwave score: %s', 'gravityformspipwave' ), $pipwave_score ) );
 			}
-			if ( $rule_action != '' ) {
+			if ( $rule_action != '' || $rule_action != 'credit_insufficient') {
 				GFPaymentAddOn::add_note( $entry['id'], sprintf( __( 'rule action: %s', 'gravityformspipwave' ), $rule_action ) );
 			}
 			if ( $message != '') {
