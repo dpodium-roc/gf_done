@@ -12,7 +12,7 @@ class GFPipwave extends GFPaymentAddOn {
     protected $_path                        = 'gravityformspipwave/pipwave.php';
     protected $_full_path                   = __FILE__;
     protected $_title                       = 'Gravity Forms Pipwave Add-On';
-    protected $_short_title                 = 'Pipwave';
+    protected $_short_title                 = 'pipwave';
 	protected $_supports_callbacks          = true;
 
     private static $_instance               = null;
@@ -280,7 +280,6 @@ EOD;
 		echo "OK";
 		//IPN from Pipwave
 		$post_data = json_decode( file_get_contents( 'php://input' ), true );
-		//var_dump($post_data);
 
 		$timestamp          = ( isset( $post_data['timestamp'] ) && !empty( $post_data['timestamp'] ) ) ? $post_data['timestamp'] : time();
 		$pw_id              = ( isset( $post_data['pw_id'] ) && !empty( $post_data['pw_id'] ) ) ? $post_data['pw_id'] : '';
@@ -314,7 +313,7 @@ EOD;
 			'transaction_status' => $transaction_status,
 			'api_secret'        => rgar( $settings, 'api_secret' ),
 		);
-		//var_dump($data_for_signature);
+
 		$newSignature           = $this->generate_pw_signature( $data_for_signature );
 		if ( $this->compareSignature( $signature, $newSignature ) ) {
 			$transaction_status = $this->compareSignature( $signature, $newSignature );
@@ -334,25 +333,18 @@ EOD;
 		//$txn_sub_status = 502;
 		$action = $this->processNotification( $transaction_status, $entry, $txn_sub_status, $final_amount, $refund, $pg_txn_id, $reverse_txn_id );
 
-
-
-		//$entry = GFAPI::get_entry( $order_number );
-		//var_dump($order_number);
-
-		//var_dump($action);
 		if ( $transaction_status != 5 ) {
-			if ( $pipwave_score != '') {
+			if ( $pipwave_score != '' ) {
 				GFPaymentAddOn::add_note( $entry['id'], sprintf( __( 'pipwave score: %s', 'gravityformspipwave' ), $pipwave_score ) );
 			}
-			if ( $rule_action != '' || $rule_action != 'credit_insufficient') {
+			if ( $rule_action != '' && $rule_action !== 'credit_insufficient' ) {
 				GFPaymentAddOn::add_note( $entry['id'], sprintf( __( 'rule action: %s', 'gravityformspipwave' ), $rule_action ) );
 			}
-			if ( $message != '') {
+			if ( $message != '' ) {
 				GFPaymentAddOn::add_note( $entry['id'], sprintf( __( 'message: %s', 'gravityformspipwave' ), $message ) );
 			}
 		}
 
-		//var_dump($GLOBALS);
 		return $action;
 	}
 
@@ -374,7 +366,6 @@ EOD;
 	 */
 	public function processNotification( $transaction_status, $entry, $txn_sub_status, $final_amount, $refund, $pg_txn_id, $reverse_txn_id )
 	{
-
 		$action[] = '';
 		switch ( $transaction_status ) {
 			case 5: // pending
@@ -456,8 +447,6 @@ EOD;
 		}
 
 		GFAPI::update_entry_property( $entry['id'], 'payment_amount', $final_amount );
-
-
 		return $action;
 	}
 
@@ -466,36 +455,29 @@ EOD;
 	//this should be the payment success page
 	public static function maybe_thankyou_page() {
 		$instance = self::get_instance();
-
 		if ( ! $instance->is_gravityforms_supported() ) {
 			return;
 		}
 		if ( $str = rgget( 'gf_pipwave_return' ) ) {
 			$str = base64_decode( $str );
-			//var_dump($str);
-
 			parse_str( $str, $query );
+
 			if ( wp_hash( 'ids=' . $query['ids'] ) == $query['hash'] ) {
 
 				list( $form_id, $lead_id ) = explode( '|', $query['ids'] );
 
 				$form = GFAPI::get_form( $form_id );
 				$lead = GFAPI::get_entry( $lead_id );
-				//var_dump($form);
+
 				if ( ! class_exists( 'GFFormDisplay' ) ) {
 					require_once( GFCommon::get_base_path() . '/form_display.php' );
 				}
-				//var_dump($lead);
-
 				$confirmation = GFFormDisplay::handle_confirmation( $form, $lead, false );
 
-				//var_dump($confirmation);
-				//die();
 				if ( is_array( $confirmation ) && isset( $confirmation['redirect'] ) ) {
 					header( "Location: {$confirmation['redirect']}" );
 					exit;
 				}
-
 				GFFormDisplay::$submission[ $form_id ] = array(
 																'is_confirmation'      => true,
 				                                                'confirmation_message' => $confirmation,
@@ -504,14 +486,12 @@ EOD;
 														 );
 				return false;
 			}
-
 		}
 	}
 
     //-SETTING PAGE-------GFdemo>dashboard>form>left panel>settings>pipwave-------------------------------------------
     
     public function plugin_settings_fields() {
-
         return array( 
             //first section
             array( 
@@ -525,7 +505,7 @@ EOD;
                         'class'             => 'medium',
                         'required'          => true,
                         'tooltip'           => '<h6>' . esc_html__( 'API Key', 'translator' ) . '</h6>' . sprintf( esc_html__( 'API Key provided by pipwave is in this %slink%s.', 'translator' ), '<a href="https://merchant.pipwave.com/development-setting/index" target="_blank">', '</a>' ),
-                     ),
+                    ),
                     //second row
                     array( 
                         'name'              => 'api_secret',
@@ -535,7 +515,7 @@ EOD;
                         'class'             => 'medium',
                         'required'          => true,
                         'tooltip'           => '<h6>' . esc_html__( 'API Secret', 'translator' ) . '</h6>' . sprintf( esc_html__( 'API Secret provided by pipwave is in this %slink%s.', 'translator' ), '<a href="https://merchant.pipwave.com/development-setting/index" target="_blank">', '</a>' ),
-                     ),
+                    ),
                     //third row
 	                /*
                     array(
@@ -561,10 +541,10 @@ EOD;
                     array( 
                         'type'              => 'save',
                         'message'           => array( 'success' => esc_html__( 'Settings have been updated.', 'translator' ) ),
-                     ),
-                 ),
-             ),
-         );
+                    ),
+                ),
+            ),
+        );
     }
     
     
@@ -613,16 +593,15 @@ EOD;
 				'choices'  => array(
 					array(
 						'label' => esc_html__( 'Select a transaction type', 'gravityforms' ),
-						'value' => ''
+						'value' => '',
 					),
 					array(
 						'label' => esc_html__( 'Products and Services', 'gravityforms' ),
-						'value' => 'product'
+						'value' => 'product',
 					),
 					//array( 'label' => esc_html__( 'Subscription', 'gravityforms' ), 'value' => 'subscription' ),
 				),
-				'tooltip'  => '<h6>' . esc_html__( 'Transaction Type', 'gravityforms' ) . '</h6>' . esc_html__( 'Select a transaction type.', 'gravityforms' )
-
+				'tooltip'  => '<h6>' . esc_html__( 'Transaction Type', 'gravityforms' ) . '</h6>' . esc_html__( 'Select a transaction type.', 'gravityforms' ),
 			),
 		);
 	    $default_settings   = parent::replace_field( 'transactionType', $fields, $default_settings );
@@ -631,16 +610,14 @@ EOD;
 
 	    //get set shipping amount
 	    $fee                = $this->feed_shipping_amount();
-	    //var_dump($fee);
 
 	    //put shipping ammount before billing information
 	    $default_settings   = parent::add_field_before( 'billingInformation', $fee, $default_settings );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	    //get set product
+	    //get set product - DELETED because number of variation of product undefined
 	    //$product = $this->feed_product();
-	    //var_dump($fee);
 
 	    //put shipping ammount before billing information
 	    //$default_settings = parent::add_field_before( 'billingInformation', $product, $default_settings );
@@ -649,8 +626,6 @@ EOD;
 
 		//create shipping information sub from copy and paste billing address
 	    $shipping_info              = parent::get_field( 'billingInformation', $default_settings );
-
-	    //var_dump($shipping_info);
 
 	    //change the name, label, tooltip
 	    $shipping_info['name']      = 'shippingInformation';
@@ -700,7 +675,6 @@ EOD;
 	    $billing_info['field_map'][3]['required'] = true;
 	    //coz buyer.country need this
 	    $billing_info['field_map'][9]['required'] = true;
-	    //var_dump($billing_info['field_map'][3] );
 
 	    $default_settings = parent::replace_field( 'billingInformation', $billing_info, $default_settings );
 
@@ -811,7 +785,6 @@ EOD;
 			'Click pipwave',
 			'Click Add New, then enter the information required. \'*\' firgure means the information is needed',
 		];
-
 		for ( $i = 1; $i < 17; $i++ ) {
 			$img    = GFCommon::get_base_url() . '../../gravityformspipwave/images/height/' . $i . 'height.png';
 			$html   = '<p>Step ' . $i . ' ' . $message1[$i] . '</p>';
@@ -839,7 +812,6 @@ EOD;
 			'Configure as in the figure',
 			'Now it\'s done!',
 		];
-
 		for ( $i = 1; $i < 12; $i++ ) {
 			$img    = GFCommon::get_base_url() . '../../gravityformspipwave/images/multiple_payment/multiple_payment_' . $i . '.png';
 			$html   = '<p>Step ' . $i . ' ' . $message2[$i] . '</p>';
