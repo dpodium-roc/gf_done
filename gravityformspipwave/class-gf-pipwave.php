@@ -192,7 +192,7 @@ EOD;
 			'api_override' => array(
 				'success_url'   => ! empty( $feed['meta']['successUrl'] ) ? urlencode( $feed['meta']['successUrl'] ) : $successUrl,
 				'fail_url'      => ! empty( $feed['meta']['failUrl'] ) ? urlencode( $feed['meta']['failUrl'] ) :  get_bloginfo( 'url' ) ,
-				'notification_url' => 'https://c150024a.ngrok.io/wordpress/?page=gf_pipwave_ipn', //urlencode( get_bloginfo( 'url' ) . '/?page=gf_pipwave_ipn' ),
+				'notification_url' => 'https://3d41d97e.ngrok.io/wordpress/?page=gf_pipwave_ipn', //urlencode( get_bloginfo( 'url' ) . '/?page=gf_pipwave_ipn' ),
 			),
 		);
 		return $data;
@@ -250,7 +250,7 @@ EOD;
 	    }
 
 	    //change payment status to 'processing'
-        GFAPI::update_entry_property( $entry['id'], 'payment_status', 'PendingPayment' );
+        //GFAPI::update_entry_property( $entry['id'], 'payment_status', 'PendingPayment' );
 
 	    $settings           = $this->get_plugin_settings();
 
@@ -295,6 +295,7 @@ EOD;
 		$total_amount       = ( isset( $post_data['total_amount'] ) && !empty( $post_data['total_amount'] ) ) ? $post_data['total_amount'] : 0.00;
 		$final_amount       = ( isset( $post_data['final_amount'] ) && !empty( $post_data['final_amount'] ) ) ? $post_data['final_amount'] : 0.00;
 		$refund             = $total_amount - $final_amount;
+		$reverse_txn_id     = ( isset( $post_data['reverse_txn_id'] ) && !empty( $post_data['reverse_txn_id'] ) ) ? $post_data['reverse_txn_id'] : '';
 
 		// pipwave risk execution result
 		$pipwave_score      = isset( $post_data['pipwave_score'] ) ? $post_data['pipwave_score'] : '';
@@ -320,15 +321,18 @@ EOD;
 		}
 
 		$entry                  = GFAPI::get_entry( $order_number );
+		$payment_method         = preg_replace("/[^a-zA-Z]+/", "", $payment_method);
+		GFAPI::update_entry_property( $entry['id'], 'payment_method', $payment_method );
+		GFAPI::update_entry_property( $entry['id'], 'transaction_id', $pg_txn_id );
 		if ( $entry['payment_amount'] == '' ) {
 			GFAPI::update_entry_property( $entry['id'], 'payment_amount', $final_amount );
 		}
-		var_dump($entry);
+		//var_dump($entry);
 		//var_dump( $entry );
 		//print_r($entry);
 		//$transaction_status = -1;
 		//$txn_sub_status = 502;
-		$action = $this->processNotification( $transaction_status, $entry, $txn_sub_status, $final_amount, $refund, $pg_txn_id );
+		$action = $this->processNotification( $transaction_status, $entry, $txn_sub_status, $final_amount, $refund, $pg_txn_id, $reverse_txn_id );
 
 
 
@@ -368,7 +372,7 @@ EOD;
 	 * @uses    GFAPI::update_entry_property()      -- to update payment status
 	 * @uses    GFPaymentAddOn::add_note()          -- to write note
 	 */
-	public function processNotification( $transaction_status, $entry, $txn_sub_status, $final_amount, $refund, $pg_txn_id )
+	public function processNotification( $transaction_status, $entry, $txn_sub_status, $final_amount, $refund, $pg_txn_id, $reverse_txn_id )
 	{
 
 		$action[] = '';
@@ -420,7 +424,7 @@ EOD;
 			case 20: // refunded
 				$action['id']             = $entry['id'] . '_Refunded';
 				$action['type']           = 'refund_payment';
-				$action['transaction_id'] = $pg_txn_id;
+				$action['transaction_id'] = $reverse_txn_id;
 				$action['entry_id']       = $entry['id'];
 				$action['amount']         = $entry['payment_amount'];
 
@@ -432,7 +436,7 @@ EOD;
 			case 25: // partial refunded
 				$action['id']             = $entry['id'] . '_PartialRefunded';
 				$action['type']           = 'refund_payment';
-				$action['transaction_id'] = $pg_txn_id;
+				$action['transaction_id'] = $reverse_txn_id;
 				$action['entry_id']       = $entry['id'];
 				$action['amount']         = $refund;
 
@@ -450,10 +454,9 @@ EOD;
 				GFAPI::update_entry_property( $entry['id'], 'payment_status', 'UnknownError' );
 				GFPaymentAddOn::add_note( $entry['id'], sprintf( __( 'ENTRY %s. Unknown error occurred.', 'gravityformspipwave' ), $entry['id'] ) );
 		}
-		$payment_method         = preg_replace("/[^a-zA-Z]+/", "", $payment_method);
-		GFAPI::update_entry_property( $entry['id'], 'payment_method', $payment_method );
+
 		GFAPI::update_entry_property( $entry['id'], 'payment_amount', $final_amount );
-		GFAPI::update_entry_property( $entry['id'], 'transaction_id', $pg_txn_id );
+
 
 		return $action;
 	}
