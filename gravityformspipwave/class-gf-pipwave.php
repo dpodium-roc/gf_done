@@ -779,12 +779,13 @@ EOD;
 	    text-align: center;
 	}
 </style>
-	<div class = "center"><img src="https://www.pipwave.com/wp-content/themes/zerif-lite-child/images/logo_bnw.png" /></div>
+	<div class="center"><img src="https://www.pipwave.com/wp-content/themes/zerif-lite-child/images/logo_bnw.png" /></div>
+	<p class="center">Simple, reliable, and cost-effective way to accept payments online. And it's free to use!</p>
     <h1>Install & Configure pipwave in Gravity Forms</h1>
     <p>You will need a pipwave account. If you don't have one, don't worry, you can create one during the configuration process. Please click link below :</p>
 		<ol>
 			<li><a href="#install">Install & Configure</a></li>
-			<li><a href="#multiple">Multiple Payment Method</a></li>
+			<li><a href="#multiple">Multiple Payment Methods</a></li>
 		</ol>
 	<h2>Getting Started</h2>
 	<h4 id="install">Install & Configure</h4>
