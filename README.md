@@ -11,3 +11,4 @@ configure setting in pipwave plugin
 --------------------------------------------
 INSTALL
 --------------------------------------------
+view gf_pipwave.docx
