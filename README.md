@@ -1,12 +1,11 @@
 
-Pipwave Plugin for Gravity Forms
+pipwave Gravity Forms Plugin
 ==========================================
 We provide simple, reliable, and cost-effective way to accept payments online. And it's free to use!
 
-create an account on pipwave
-setup payment methods
-install pipwave plugin for gravity forms
-configure setting in pipwave plugin
+1. Sign up [pipwave Merchant Account](https://merchant.pipwave.com/site/signup)
+2. Setup payment methods
+3. Install & configure pipwave gravity forms plugin as below
 
 --------------------------------------------
 INSTALLATION
