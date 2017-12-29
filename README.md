@@ -10,7 +10,6 @@ We provide simple, reliable, and cost-effective way to accept payments online. A
 
 INSTALLATION
 --------------------------------------------
-view gf_pipwave.docx for further details.
 
 1. Download this repository.
 2. Unzip the repository zip file. Then zip the gravityformspipwave folder for installation in next step.
@@ -19,14 +18,14 @@ view gf_pipwave.docx for further details.
 
 CONFIGURATION
 -------------------------------------------------
-configuration 1
-  Go to Form > Settings > Pipwave . You should see Pipwave Settings as title.
+One time configuration
+  Go to Form > Settings > pipwave . You should see pipwave Settings as title.
   Fill in API key and API secret
 
-configuration 2 (configure this after you created or creating a form)
-  SELECT a form > Settings > Pipwave . You should see Pipwave Feeds instead of Pipwave Settings this time.
-  Map your form fields to respective fields.
-  * sign means it is needed, and respective field should exists in your form.
+Configuration for each form
+  Edit Settings for a form and select pipwave. You should see pipwave Feeds as the title.
+  Click on Add New and fill in the form to map your form fields to respective fields.
+  * indicates mandatory field, and respective field should exists in your form.
   
 
 Notes
