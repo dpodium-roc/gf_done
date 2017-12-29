@@ -758,24 +758,16 @@ EOD;
     <h1>Install & Configure pipwave in Gravity Forms</h1>
     <p>You will need a pipwave account. If you don't have one, don't worry, you can create one during the configuration process. Please click link below :</p>
 		<ol>
-			<li><a href="#install">Install & Configure</a></li>
+			<li><a href="#install">Configure</a></li>
 			<li><a href="#multiple">Multiple Payment Methods</a></li>
 		</ol>
 	<h2>Getting Started</h2>
-	<h4 id="install">Install & Configure</h4>
+	<h4 id="install">Configure</h4>
 EOD;
         echo $html;
 
         $message1 = [
 			'',
-			'Click Dashboard',//1
-			'Click Plugins',//2
-			'Search for our plugin. If found, please proceed to step 10. If not found please proceed to next step.',
-			'Click Add New',
-			'Click Upload Plugin',
-			'Click Browse...',
-			'Select the zip file of the plugin',
-			'Click open. Then Click Install Now',
 			'Click Dashboard. Then hover to Plugins. Then Click Installed Plugins',
 			'Find our plugin (pipwave). Then Click Activate',
 			'Click Settings',
@@ -783,10 +775,10 @@ EOD;
 			'Click Form',
 			'Select your form, Click Setting, then Click pipwave',
 			'Click pipwave',
-			'Click Add New, then enter the information required. \'*\' firgure means the information is needed',
+			'Click Add New, then enter the information required. \'*\' firgure means the information is mandatory, and a field have to be create to map to it.',
 		];
-		for ( $i = 1; $i < 17; $i++ ) {
-			$img    = GFCommon::get_base_url() . '../../gravityformspipwave/images/height/' . $i . 'height.png';
+		for ( $i = 1; $i < 9; $i++ ) {
+			$img    = GFCommon::get_base_url() . '../../gravityformspipwave/images/configure/configure' . $i . '.png';
 			$html   = '<p>Step ' . $i . ' ' . $message1[$i] . '</p>';
 			$html  .= '<img src = ' . $img . ' width="1000" ></img>';
 			echo $html;
