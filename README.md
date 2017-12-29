@@ -26,8 +26,10 @@ CONFIGURATION
 *Configuration for each form*
 
   Edit Settings for a form and select pipwave. You should see pipwave Feeds as the title.
+  
   Click on Add New and fill in the form to map your form fields to respective fields.
-  >* indicates mandatory field, and respective field should exists in your form.
+  
+  <code>&ast;</code> indicates mandatory field, and respective field should exists in your form.
   
 
 Notes
