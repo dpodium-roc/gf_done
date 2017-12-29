@@ -20,16 +20,14 @@ CONFIGURATION
 -------------------------------------------------
 *One time configuration*
 
-  Go to `Form > Settings > pipwave` . You should see pipwave Settings as title.
-  Fill in API key and API secret
+  - Go to `Form > Settings > pipwave` . You should see pipwave Settings as title.
+  - Fill in API key and API secret
 
 *Configuration for each form*
 
-  Edit Settings for a form and select pipwave. You should see pipwave Feeds as the title.
-  
-  Click on Add New and fill in the form to map your form fields to respective fields.
-  
-  <code>&ast;</code> indicates mandatory field, and respective field should exists in your form.
+  - Edit Settings for a form and select pipwave. You should see pipwave Feeds as the title.
+  - Click on Add New and fill in the form to map your form fields to respective fields.
+  - <code>&ast;</code> indicates mandatory field, and respective field should exists in your form.
   
 
 Notes
