@@ -15,7 +15,7 @@ view gf_pipwave.docx for further details.
 
 1. Download this repository.
 2. Unzip the zip file. Then zip the gravityformspipwave file. This file is needed for installation.
-3. Login to your WordPress WooCommerce admin dashboard, navigate to the Plugins menu and click Add New. Upload the zip    gravityformspipwave file mentioned in step 2.
+3. Login to your WordPress admin dashboard, navigate to the Plugins menu and click Add New. Upload the zip    gravityformspipwave file mentioned in step 2.
 4. After installation is successful, activate the plugin.
 
 -------------------------------------------------
