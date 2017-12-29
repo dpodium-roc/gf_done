@@ -7,7 +7,7 @@ We provide simple, reliable, and cost-effective way to accept payments online. A
 2. Setup payment methods
 3. Install & configure pipwave gravity forms plugin as below
 
---------------------------------------------
+
 INSTALLATION
 --------------------------------------------
 view gf_pipwave.docx for further details.
@@ -17,7 +17,6 @@ view gf_pipwave.docx for further details.
 3. Login to your WordPress admin dashboard, navigate to the Plugins menu and click Add New. Upload the zip    gravityformspipwave file mentioned in step 2.
 4. After installation is successful, activate the plugin.
 
--------------------------------------------------
 CONFIGURATION
 -------------------------------------------------
 configuration 1
